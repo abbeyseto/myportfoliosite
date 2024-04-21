@@ -64,3 +64,17 @@ export const fetchCompanies = async () => {
   const companies: Companies[] = data.companies;
   return companies;
 };
+
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  text: string,
+  html: string
+) => {
+  const res = await fetch(`/api/sendEmail`, {
+    method: "POST",
+    body: JSON.stringify({ to, subject, text, html }),
+  });
+  const data = await res.json();
+  return data;
+};
