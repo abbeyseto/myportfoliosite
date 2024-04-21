@@ -9,9 +9,9 @@ import { fetchPageInfo, fetchWhatIDo } from "../utils";
 
 export default function Hero() {
   const [pageInfo, setPageInfo] = useState({} as PageInfo);
-  const [whatido, setWhatIDo] = useState([] as WhatIDo[]);
-  const titles = whatido.map((item) => item.title);
-  const [text, count] = useTypewriter({
+  const [titles, setTitles] = useState([] as string[]);
+  
+  const [text] = useTypewriter({
     words: [`Hi , my name is ${pageInfo?.name}`, ...titles],
     loop: true,
     delaySpeed: 2000,
@@ -22,8 +22,9 @@ export default function Hero() {
     async function fetchData() {
       const pageInfo = await fetchPageInfo();
       const whatido = await fetchWhatIDo();
+      const titles: string[] = whatido.map((item) => item.title);
       setPageInfo(pageInfo);
-      setWhatIDo(whatido);
+      setTitles(titles);
       setIsDataReady(true); // Set data ready flag to true
     }
     fetchData();

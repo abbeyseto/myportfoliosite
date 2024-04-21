@@ -19,7 +19,6 @@ export default function About() {
     // Render loading indicator or return null while data is being fetched
     return null;
   }
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -54,9 +53,12 @@ export default function About() {
           <span className=" underline decoration-darkGreen/50">little</span>{" "}
           background
         </h4>
-        <p className="text-sm md:text-lg lg:text-lg text-justify">
-          {pageInfo.backgroundInformation}
-        </p>
+        <p
+          className="text-sm md:text-lg lg:text-lg text-justify"
+          dangerouslySetInnerHTML={{
+            __html: pageInfo.backgroundInformation.replace(/\n/g, "<br/>"),
+          }}
+        />
       </div>
     </motion.div>
   );

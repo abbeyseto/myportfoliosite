@@ -1,16 +1,6 @@
-import { GetStaticProps } from "next";
 import Head from "next/head"
 import Header from "../components/Header";
 import Hero from "../components/Hero";
-import {
-  Experience,
-  PageInfo,
-  Skill,
-  Project,
-  Social,
-  WhatIDo,
-  Companies,
-} from "../typings";
 import About from "../components/About";
 import WorkExperience from "../components/WorkExperience";
 import Skills from "../components/Skills";
@@ -18,28 +8,9 @@ import Projects from "../components/Projects";
 import ContactMe from "../components/ContactMe";
 import Link from "next/link";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import Script from "next/script";
 import InfiniteScrollLogos from "../components/ScrollingLogo";
 
-type Props = {
-  pageInfo: PageInfo;
-  experiences: Experience[];
-  skills: Skill[];
-  projects: Project[];
-  socials: Social[];
-  whatido: WhatIDo[];
-  companies: Companies[];
-};
-
-const Home = ({
-  pageInfo,
-  experiences,
-  projects,
-  skills,
-  socials,
-  whatido,
-  companies,
-}: Props) => {
+const Home = () => {
   return (
     <div
       className="bg-lightBackground text-darkBlack h-screen snap-y snap-mandatory
@@ -132,26 +103,3 @@ const Home = ({
 };
 
 export default Home;
-
-// export const getStaticProps: GetStaticProps<Props> = async () => {
-//   const pageInfo = await fetchPageInfo();
-//   const experiences = await fetchExperiences();
-//   const skills = await fetchSkills();
-//   const projects = await fetchProjects();
-//   const socials = await fetchSocials();
-//   const whatido = await fetchWhatIDo();
-//   const companies = await fetchCompanies();
-
-//   return {
-//     props: {
-//       pageInfo,
-//       experiences,
-//       skills,
-//       projects,
-//       socials,
-//       whatido,
-//       companies
-//     },
-//     revalidate: 10,
-//   };
-// };
