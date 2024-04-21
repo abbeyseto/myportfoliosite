@@ -5,7 +5,7 @@ import { Experience } from "../typings";
 
 type Props = { experience: Experience };
 
-export default function ExperienceCard({ experience }: Props) {
+export default function ExperienceCard({experience}: Props) {
   return (
     <article className=" flex drop-shadow-xl flex-row rounded-2xl items-center space-y-0 p-4 flex-shrink-0 w-35  md:w-[300px] xl:w-[500px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/30 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
       <motion.img
@@ -28,6 +28,7 @@ export default function ExperienceCard({ experience }: Props) {
             </p>
             <div className="flex space-x-2 my-2">
               {experience?.technologies?.map((technology) => (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={technology._id}
                   className="h-10 w-10 rounded-full object-cover"

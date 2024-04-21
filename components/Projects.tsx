@@ -1,11 +1,19 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { urlFor } from "../sanity";
 import { Project } from "../typings";
+import { fetchProjects } from "../utils";
 
-type Props = { projects: Project[] };
+export default function Projects() {
+  const [projects, setProjects] = useState([] as Project[]);
 
-export default function Projects({ projects }: Props) {
+  useEffect(() => {
+    async function fetchData() {
+      const projects = await fetchProjects();
+      setProjects(projects);
+    }
+    fetchData();
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}

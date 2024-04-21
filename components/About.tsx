@@ -1,11 +1,25 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { urlFor } from "../sanity";
 import { PageInfo } from "../typings";
+import { fetchPageInfo } from "../utils";
 
-type Props = { pageInfo: PageInfo };
+export default function About() {
+  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
 
-export default function About({ pageInfo }: Props) {
+  useEffect(() => {
+    async function fetchData() {
+      const pageInfoData = await fetchPageInfo();
+      setPageInfo(pageInfoData);
+    }
+    fetchData();
+  }, []);
+
+  if (!pageInfo) {
+    // Render loading indicator or return null while data is being fetched
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -31,7 +45,8 @@ export default function About({ pageInfo }: Props) {
         }}
         viewport={{ once: true }}
         className=" -mb-24 md:mb-0 flex-shrink-0 w-52 h-52 rounded-full object-cover md:rounded-lg md:w-64 md:h-95 xl:w-[500px] xl:h-[600px]"
-        src={urlFor(pageInfo?.profilePic).url()}
+        src={urlFor(pageInfo.profilePic).url() || ""}
+        alt="Profile"
       />
       <div className="space-y-5 md:space-y-10 px-0 md:px-10">
         <h4 className="text-xl md:text-4xl font-semibold">
@@ -40,7 +55,7 @@ export default function About({ pageInfo }: Props) {
           background
         </h4>
         <p className="text-sm md:text-lg lg:text-lg text-justify">
-          {pageInfo?.backgroundInformation}
+          {pageInfo.backgroundInformation}
         </p>
       </div>
     </motion.div>

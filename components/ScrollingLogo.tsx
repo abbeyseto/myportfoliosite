@@ -9,10 +9,7 @@ import Image from "next/image";
 import useMeasure from "react-use-measure";
 import { Companies } from "../typings";
 import { urlFor } from "../sanity";
-
-type Props = {
-  companies: Companies[];
-};
+import { fetchCompanies } from "../utils";
 
 interface CardProps {
   company: Companies;
@@ -58,7 +55,17 @@ const Card: React.FC<CardProps> = ({ company }) => {
   );
 };
 
-export default function InfiniteScrollLogos({ companies }: Props) {
+export default function InfiniteScrollLogos() {
+    const [companies, setCompanies] = useState([] as Companies[]);
+
+    useEffect(() => {
+      async function fetchData() {
+        const companies = await fetchCompanies();
+        setCompanies(companies);
+      }
+      fetchData();
+    }, []);
+
   const FAST_DURATION = 25;
   const SLOW_DURATION = 75;
 

@@ -11,15 +11,6 @@ import {
   WhatIDo,
   Companies,
 } from "../typings";
-import {
-  fetchPageInfo,
-  fetchSocials,
-  fetchExperiences,
-  fetchProjects,
-  fetchSkills,
-  fetchWhatIDo,
-  fetchCompanies,
-} from "../utils";
 import About from "../components/About";
 import WorkExperience from "../components/WorkExperience";
 import Skills from "../components/Skills";
@@ -90,41 +81,41 @@ const Home = ({
       </Script> */}
 
       {/* Header */}
-      <Header socials={socials} />
+      <Header />
 
       {/* Hero */}
       <section id="hero" className="snap-start">
-        <Hero pageInfo={pageInfo} whatido={whatido} />
+        <Hero />
       </section>
 
       {/* About */}
       <section id="about" className="snap-center">
-        <About pageInfo={pageInfo} />
+        <About />
       </section>
 
       {/* Experiences */}
       <section id="experience" className="snap-center">
-        <WorkExperience experiences={experiences} />
+        <WorkExperience />
       </section>
 
       {/* Skills */}
       <section id="skills" className="snap-start">
-        <Skills skills={skills} />
+        <Skills />
       </section>
 
       {/* Projects */}
       <section id="projects" className="snap-start">
-        <Projects projects={projects} />
+        <Projects />
       </section>
 
       {/* Companies I work with */}
       <section id="clients" className="snap-start">
-        <InfiniteScrollLogos companies={companies} />
+        <InfiniteScrollLogos />
       </section>
 
       {/* Contact */}
       <section id="contact" className="snap-start">
-        <ContactMe pageInfo={pageInfo} />
+        <ContactMe />
       </section>
 
       <Link href="#hero">
@@ -142,25 +133,25 @@ const Home = ({
 
 export default Home;
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const pageInfo = await fetchPageInfo();
-  const experiences = await fetchExperiences();
-  const skills = await fetchSkills();
-  const projects = await fetchProjects();
-  const socials = await fetchSocials();
-  const whatido = await fetchWhatIDo();
-  const companies = await fetchCompanies();
+// export const getStaticProps: GetStaticProps<Props> = async () => {
+//   const pageInfo = await fetchPageInfo();
+//   const experiences = await fetchExperiences();
+//   const skills = await fetchSkills();
+//   const projects = await fetchProjects();
+//   const socials = await fetchSocials();
+//   const whatido = await fetchWhatIDo();
+//   const companies = await fetchCompanies();
 
-  return {
-    props: {
-      pageInfo,
-      experiences,
-      skills,
-      projects,
-      socials,
-      whatido,
-      companies
-    },
-    revalidate: 10,
-  };
-};
+//   return {
+//     props: {
+//       pageInfo,
+//       experiences,
+//       skills,
+//       projects,
+//       socials,
+//       whatido,
+//       companies
+//     },
+//     revalidate: 10,
+//   };
+// };

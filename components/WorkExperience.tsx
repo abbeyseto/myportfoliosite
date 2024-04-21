@@ -1,11 +1,19 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Experience } from "../typings";
 import ExperienceCard from "./ExperienceCard";
+import { fetchExperiences } from "../utils";
 
-type Props = { experiences: Experience[] };
+export default function WorkExperience() {
+  const [experiences, setExperience] = useState([] as Experience[]);
 
-export default function WorkExperience({ experiences }: Props) {
+  useEffect(() => {
+    async function fetchData() {
+      const experiences = await fetchExperiences();
+      setExperience(experiences);
+    }
+    fetchData();
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -19,7 +27,7 @@ export default function WorkExperience({ experiences }: Props) {
 
       {/* Experience cards */}
       <div className="w-screen h-1/2 md:w-full text-left pb-5 md:pb-10 flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-darkGreen/80">
-        {experiences?.map((experience) => (
+        {experiences && experiences?.map((experience) => (
           <ExperienceCard key={experience._id} experience={experience} />
         ))}
       </div>

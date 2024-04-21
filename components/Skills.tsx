@@ -1,11 +1,19 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Skill as SkillType } from "../typings";
 import Skill from "./Skill";
+import { fetchSkills } from "../utils";
 
-type Props = { skills: SkillType[] };
+export default function Skills() {
+  const [skills, setSkills] = useState([] as SkillType[]);
 
-export default function Skills({ skills }: Props) {
+  useEffect(() => {
+    async function fetchData() {
+      const skills = await fetchSkills();
+      setSkills(skills);
+    }
+    fetchData();
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}
