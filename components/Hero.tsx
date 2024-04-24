@@ -2,12 +2,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Cursor, useTypewriter } from "react-simple-typewriter";
 import { urlFor } from "../sanity";
-import { PageInfo, WhatIDo } from "../typings";
+import { PageInfo } from "../typings";
 import BackgroundCircles from "./BackgroundCircles";
 import Image from "next/image";
 import { fetchPageInfo, fetchWhatIDo } from "../utils";
 
-export default function Hero() {
+interface HeroProps {
+  onDisplay: () => void;
+  // Other props for the Hero component
+}
+
+const Hero: React.FC<HeroProps> = ({ onDisplay }) => {
   const [pageInfo, setPageInfo] = useState({} as PageInfo);
   const [titles, setTitles] = useState([] as string[]);
   
@@ -26,13 +31,19 @@ export default function Hero() {
       setPageInfo(pageInfo);
       setTitles(titles);
       setIsDataReady(true); // Set data ready flag to true
+      onDisplay();
     }
     fetchData();
-  }, []);
+  }, [onDisplay]);
 
   if (!isDataReady) {
-    // Render loading indicator or return null
-    return null;
+    return (
+      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white">
+        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+          Loading...
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -76,3 +87,5 @@ export default function Hero() {
     </div>
   );
 }
+
+export default Hero;

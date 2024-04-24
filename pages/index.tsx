@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Head from "next/head"
 import Header from "../components/Header";
 import Hero from "../components/Hero";
@@ -11,6 +12,8 @@ import { HomeIcon } from "@heroicons/react/24/solid";
 import InfiniteScrollLogos from "../components/ScrollingLogo";
 
 const Home = () => {
+  const [heroDisplayed, setHeroDisplayed] = useState(false);
+
   return (
     <div
       className="bg-lightBackground text-darkBlack h-screen snap-y snap-mandatory
@@ -38,57 +41,50 @@ const Home = () => {
         <title>{"Abiodun's Portfolio"}</title>
       </Head>
 
-      {/* Google Analytics */}
-      {/* <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-LV1LN9VBT0"
-        strategy="afterInteractive"
-      ></Script>
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`window.dataLayer = window.dataLayer || [];
-           function gtag(){dataLayer.push(arguments);}
-           gtag('js', new Date());
-           gtag('config', 'G-LV1LN9VBT0')`}
-        ;
-      </Script> */}
-
       {/* Header */}
       <Header />
 
       {/* Hero */}
       <section id="hero" className="snap-start">
-        <Hero />
+        <Hero onDisplay={() => setHeroDisplayed(true)} />
       </section>
 
-      {/* About */}
-      <section id="about" className="snap-center">
-        <About />
-      </section>
+      {/* Conditionally render sections below the Hero */}
+      {heroDisplayed && (
+        <>
+          {/* About */}
+          <section id="about" className="snap-center">
+            <About />
+          </section>
 
-      {/* Experiences */}
-      <section id="experience" className="snap-center">
-        <WorkExperience />
-      </section>
+          {/* Experiences */}
+          <section id="experience" className="snap-center">
+            <WorkExperience />
+          </section>
 
-      {/* Skills */}
-      <section id="skills" className="snap-start">
-        <Skills />
-      </section>
+          {/* Skills */}
+          <section id="skills" className="snap-start">
+            <Skills />
+          </section>
 
-      {/* Projects */}
-      <section id="projects" className="snap-start">
-        <Projects />
-      </section>
+          {/* Projects */}
+          <section id="projects" className="snap-start">
+            <Projects />
+          </section>
 
-      {/* Companies I work with */}
-      <section id="clients" className="snap-start">
-        <InfiniteScrollLogos />
-      </section>
+          {/* Companies I work with */}
+          <section id="clients" className="snap-start">
+            <InfiniteScrollLogos />
+          </section>
 
-      {/* Contact */}
-      <section id="contact" className="snap-start">
-        <ContactMe />
-      </section>
+          {/* Contact */}
+          <section id="contact" className="snap-start">
+            <ContactMe />
+          </section>
+        </>
+      )}
 
+      {/* Back to Top Link */}
       <Link href="#hero">
         <footer className="sticky bottom-5 w-full cursor-pointer">
           <div className="flex items-center justify-center">
