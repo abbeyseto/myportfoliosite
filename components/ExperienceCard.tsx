@@ -5,9 +5,9 @@ import { Experience } from "../typings";
 
 type Props = { experience: Experience };
 
-export default function ExperienceCard({experience}: Props) {
+export default function ExperienceCard({experience}: Readonly<Props>) {
   return (
-    <article className=" flex drop-shadow-xl flex-row rounded-2xl items-center space-y-0 p-4 flex-shrink-0 w-35  md:w-[300px] xl:w-[500px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/30 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
+    <article className=" flex drop-shadow-xl flex-row rounded-2xl items-center space-y-0 p-4 flex-shrink-0 w-10/12  md:w-[450px] lg:w-[400px] xl:w-[500px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/30 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
       <motion.img
         initial={{ opacity: 0, y: -100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -26,12 +26,12 @@ export default function ExperienceCard({experience}: Props) {
             <p className="font-bold text-md md:text-2xl  mt-1 text-lightGreen">
               {experience?.company}
             </p>
-            <div className="flex space-x-2 my-2">
+            <div className="flex flex-wrap space-x-2 my-2">
               {experience?.technologies?.map((technology) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={technology._id}
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-8 w-8 rounded-full object-cover"
                   src={urlFor(technology?.image).url()}
                   alt=""
                 />
@@ -49,10 +49,10 @@ export default function ExperienceCard({experience}: Props) {
           />
         </div>
         <p className="uppercase py-2 md:py-5 text-gray-500 text-sm md:text-lg">
-          {new Date(experience?.dateStarted).toDateString()} -{" "}
+          {`${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(experience?.dateStarted))} ${new Date(experience?.dateStarted).getFullYear().toString()} - `}
           {experience.isCurrentlyWorkingHere
             ? "Present"
-            : new Date(experience?.dateEnded).toDateString()}
+            : `${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(experience?.dateEnded))} ${new Date(experience?.dateEnded).getFullYear().toString()}`}
         </p>
       </div>
       {/* <ul className="px-0 md:px-10 list-disc  text-black space-y-2 pr-5 text-justify ml-0 text-sm md:text-lg pl-5 overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-darkGreen/80">
