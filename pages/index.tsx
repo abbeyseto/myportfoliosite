@@ -10,6 +10,7 @@ import ContactMe from "../components/ContactMe";
 import Link from "next/link";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import InfiniteScrollLogos from "../components/ScrollingLogo";
+import { Analytics } from "@vercel/analytics/react"
 
 const Home = () => {
   const [heroDisplayed, setHeroDisplayed] = useState(false);
@@ -94,6 +95,7 @@ const Home = () => {
           </div>
         </footer>
       </Link>
+      <Analytics />
     </div>
   );
 };
