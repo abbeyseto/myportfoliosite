@@ -15,13 +15,40 @@ interface CardProps {
   company: Companies;
 }
 
+interface ImageProps {
+  imageUrl: string;
+  alt: string;
+}
+
+const ImageComponent: React.FC<ImageProps> = ({ imageUrl, alt }) => {
+  const [aspectRatio, setAspectRatio] = useState(0);
+
+  const handleImageLoad = (event: any) => {
+    const { naturalWidth, naturalHeight } = event.target;
+    const ratio = naturalWidth / naturalHeight;
+    console.log(`Aspect Ratio of ${alt} is ${ratio}`)
+    setAspectRatio(ratio);
+  };
+  return (
+    <Image
+      src={imageUrl}
+      alt={alt}
+      quality={100}
+      className={`w-${Math.round(300)}px max-w-[600px]`}
+      width={aspectRatio< 2? 100: 300}
+      height={0}
+      onLoad={handleImageLoad}
+    />
+  );
+};
+
 const Card: React.FC<CardProps> = ({ company }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   return (
     <motion.div
       onHoverStart={() => setShowOverlay(true)}
       onHoverEnd={() => setShowOverlay(false)}
-      className="relative overflow-hidden h-auto p-5 w-full rounded-xl object-contain"
+      className="relative flex overflow-hidden h-auto p-5 w-full rounded-xl object-contain items-center justify-center"
     >
       <AnimatePresence>
         {showOverlay && (
@@ -45,11 +72,8 @@ const Card: React.FC<CardProps> = ({ company }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <img
-        src={urlFor(company?.image).url()}
-        alt={company.title}
-        className="w-[300px] max-w-[600px]"
-      />
+      <ImageComponent imageUrl={urlFor(company?.image).url()}
+        alt={company.title}/>
       {/* <p className="text-sm m-2 pt-10">{company.title}</p> */}
     </motion.div>
   );
@@ -103,7 +127,7 @@ export default function InfiniteScrollLogos() {
   return (
     <div className="p-8">
       <div className="h-screen relative flex overflow-hidden flex-col text-left md:flex-row max-w-1/2 justify-evenly mx-auto items-center z-0">
-        <div className="absolute top-20 md:top-24 items-center">
+        <div className="absolute top-20 mb-60 md:top-24 items-center">
           <h3 className=" uppercase tracking-[20px] text-gray-500 text-xl md:text-2xl">Companies</h3>
           <p className="tracking-[5px] text-lg text-gray-700 pt-10">
             Here are some of the companies i have worked with.
@@ -111,7 +135,7 @@ export default function InfiniteScrollLogos() {
         </div>
 
         <motion.div
-          className="absolute left-0 flex gap-8"
+          className="absolute left-0 mt-60 flex gap-8"
           ref={ref}
           style={{ x: xTranslation }}
           onHoverStart={() => {
@@ -123,8 +147,8 @@ export default function InfiniteScrollLogos() {
             setDuration(FAST_DURATION);
           }}
         >
-          {[...companies, ...companies].map((company, index) => (
-            <Card key={index} company={company} />
+          {[...companies, ...companies].map((company) => (
+            <Card key={company._id} company={company} />
           ))}
         </motion.div>
       </div>
