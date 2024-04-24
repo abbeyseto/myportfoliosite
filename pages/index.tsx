@@ -11,6 +11,7 @@ import Link from "next/link";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import InfiniteScrollLogos from "../components/ScrollingLogo";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const Home = () => {
   const [heroDisplayed, setHeroDisplayed] = useState(false);
@@ -96,6 +97,7 @@ const Home = () => {
         </footer>
       </Link>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 };
