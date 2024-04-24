@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { urlFor } from "../sanity";
 import { Project } from "../typings";
 import { fetchProjects } from "../utils";
+import Image from "next/image";
 
 export default function Projects() {
   const [projects, setProjects] = useState([] as Project[]);
@@ -21,7 +22,7 @@ export default function Projects() {
       transition={{ duration: 1.5 }}
       className=" h-screen relative flex overflow-hidden flex-col text-left md:flex-row max-w-1/2 justify-evenly mx-auto items-center z-0"
     >
-      <h3 className="absolute top-20 md:top-24 uppercase tracking-[20px] text-gray-500 text-xl md:text-2xl">
+      <h3 className="absolute top-20 mx-6 md:top-24 uppercase tracking-[20px] text-gray-500 text-xl md:text-2xl">
         Some Projects
       </h3>
 
@@ -50,11 +51,14 @@ export default function Projects() {
               </h4>
               <div className="flex items-center space-x-2 justify-center ">
                 {project?.technologies.map((technology) => (
-                  <img
+                  <Image
                     key={technology._id}
+                    quality={90}
                     className="h-10 w-10 rounded-full object-cover"
                     src={urlFor(technology?.image).url()}
                     alt=""
+                    width={10}
+                    height={0}
                   />
                 ))}
               </div>
