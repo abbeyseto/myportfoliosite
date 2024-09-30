@@ -1,0 +1,12 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "selfcoach_mobile",
+        "package_name": "com.example.selfcoach_mobile",
+        "sha256_cert_fingerprints": [
+          "C2:1F:B8:29:A1:13:DB:0D:D9:AB:98:4B:EF:78:FA:8B:9D:DA:52:47:90:DF:A4:D9:55:66:C8:25:D9:B5:69:06"
+        ]
+      }
+    }
+  ]
