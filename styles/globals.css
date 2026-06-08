@@ -2,12 +2,179 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    --page-bg: #050607;
+    --page-fg: #f7f5f1;
+    --page-muted: rgba(247, 245, 241, 0.72);
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-strong: rgba(255, 255, 255, 0.07);
+    --surface-panel: rgba(0, 0, 0, 0.3);
+    --surface-header: rgba(0, 0, 0, 0.72);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(111, 159, 152, 0.2);
+    --input-bg: rgba(0, 0, 0, 0.3);
+    --input-fg: #f7f5f1;
+    --input-placeholder: rgba(247, 245, 241, 0.42);
+    --logo-surface: linear-gradient(180deg, rgba(243, 241, 234, 0.98), rgba(219, 214, 204, 0.94));
+    --selection-bg: rgba(111, 159, 152, 0.35);
+    --selection-fg: #ffffff;
+  }
+
+  html[data-theme="light"] {
+    --page-bg: #f4efe7;
+    --page-fg: #151515;
+    --page-muted: rgba(21, 21, 21, 0.68);
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-strong: rgba(255, 255, 255, 0.9);
+    --surface-panel: rgba(255, 255, 255, 0.8);
+    --surface-header: rgba(244, 239, 231, 0.82);
+    --border-subtle: rgba(21, 21, 21, 0.08);
+    --border-strong: rgba(44, 105, 117, 0.16);
+    --input-bg: rgba(255, 255, 255, 0.85);
+    --input-fg: #151515;
+    --input-placeholder: rgba(21, 21, 21, 0.38);
+    --logo-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 237, 230, 0.96));
+    --selection-bg: rgba(44, 105, 117, 0.24);
+    --selection-fg: #111111;
+  }
+
+  html[data-theme="light"] .border-white\/5,
+  html[data-theme="light"] .border-white\/8,
+  html[data-theme="light"] .border-white\/10,
+  html[data-theme="light"] .border-white\/15,
+  html[data-theme="light"] .border-white\/20 {
+    border-color: var(--border-subtle) !important;
+  }
+
+  html[data-theme="light"] .bg-white\/4,
+  html[data-theme="light"] .bg-white\/5,
+  html[data-theme="light"] .bg-white\/8 {
+    background-color: var(--surface) !important;
+  }
+
+  body {
+    background-color: var(--page-bg);
+    color: var(--page-fg);
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+}
+
+body {
+  @apply antialiased;
+}
+
 @layer components {
+  .theme-shell {
+    background-color: var(--page-bg);
+    color: var(--page-fg);
+  }
+
+  .theme-surface {
+    color: var(--page-fg);
+  }
+
+  .theme-dark-surface {
+    color: #f7f5f1;
+  }
+
+  html[data-theme="light"] .theme-surface .text-white {
+    color: var(--page-fg) !important;
+  }
+
+  html[data-theme="light"] .theme-surface .text-stone-200 {
+    color: rgba(21, 21, 21, 0.9) !important;
+  }
+
+  html[data-theme="light"] .theme-surface .text-stone-300 {
+    color: var(--page-muted) !important;
+  }
+
+  html[data-theme="light"] .theme-surface .text-stone-400 {
+    color: rgba(21, 21, 21, 0.52) !important;
+  }
+
+  html[data-theme="light"] .theme-surface .text-stone-500 {
+    color: rgba(21, 21, 21, 0.36) !important;
+  }
+
+  html[data-theme="light"] .theme-dark-surface .text-white {
+    color: #f7f5f1 !important;
+  }
+
+  html[data-theme="light"] .theme-dark-surface .text-stone-200 {
+    color: rgba(247, 245, 241, 0.9) !important;
+  }
+
+  html[data-theme="light"] .theme-dark-surface .text-stone-300 {
+    color: rgba(247, 245, 241, 0.8) !important;
+  }
+
+  html[data-theme="light"] .theme-dark-surface .text-stone-400 {
+    color: rgba(247, 245, 241, 0.68) !important;
+  }
+
+  html[data-theme="light"] .theme-dark-surface .text-stone-500 {
+    color: rgba(247, 245, 241, 0.48) !important;
+  }
+
+  .theme-header {
+    background-color: var(--surface-header);
+    border-color: var(--border-subtle);
+    backdrop-filter: blur(22px);
+  }
+
+  .surface-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .surface-card-strong {
+    background-color: var(--surface-strong);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .surface-panel {
+    background-color: var(--surface-panel);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .theme-logo-surface {
+    background: var(--logo-surface);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .theme-input {
+    @apply rounded-2xl border px-4 py-4 text-sm outline-none transition;
+    background-color: var(--input-bg);
+    border-color: var(--border-subtle);
+    color: var(--input-fg);
+  }
+
+  .theme-input::placeholder {
+    color: var(--input-placeholder);
+  }
+
   .heroButton {
-    @apply m-2 px-3 md:px-6 py-2 border border-lightBackground rounded-full uppercase text-xs tracking-widest text-gray-400 transition-all hover:border-lightGreen/70 hover:text-lightGreen/70;
+    @apply m-2 rounded-full border px-4 py-2 text-xs uppercase tracking-[0.35em] transition;
+    border-color: var(--border-subtle);
+    color: var(--page-muted);
+  }
+
+  .heroButton:hover {
+    border-color: rgba(111, 159, 152, 0.7);
+    color: var(--page-fg);
   }
 
   .contactInput {
-    @apply outline-none bg-slate-400/20 rounded-lg border-b-2 px-6 py-3 md:py-4  text-gray-500 placeholder-gray-500 transition-all focus:border-darkGreen/20 focus:text-darkGreen/80 hover:border-darkGreen/20;
+    @apply theme-input w-full;
   }
 }

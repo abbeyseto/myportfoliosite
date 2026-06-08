@@ -12,6 +12,9 @@ import experience from './experience'
 import project from './project'
 import whatIDo from './whatIDo'
 import companies from './companies'
+import modelomics from './modelomics'
+import testimonial from './testimonial'
+import writing from './writing'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -28,6 +31,9 @@ export default createSchema({
     social,
     project,
     whatIDo,
-    companies
+    companies,
+    modelomics,
+    testimonial,
+    writing
   ]),
 })

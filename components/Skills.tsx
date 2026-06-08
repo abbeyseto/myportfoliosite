@@ -1,42 +1,69 @@
+import Image from "next/image";
+import React from "react";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { Skill as SkillType } from "../typings";
-import Skill from "./Skill";
-import { fetchSkills } from "../utils";
+import type { Skill as SkillType } from "../typings";
+import { urlFor } from "../sanity";
+import SectionFrame from "./SectionFrame";
+import SectionHeading from "./SectionHeading";
 
-export default function Skills() {
-  const [skills, setSkills] = useState([] as SkillType[]);
+type Props = {
+  skills: SkillType[];
+};
 
-  useEffect(() => {
-    async function fetchData() {
-      const skills = await fetchSkills();
-      setSkills(skills);
-    }
-    fetchData();
-  }, []);
+export default function Skills({ skills }: Readonly<Props>) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
-      className="h-screen flex relative flex-col text-center md:text-left xl:flex-row max-w-[2000px] xl:px-10 min-h-screen justify-center xl:space-y-0 mx-auto items-center "
-    >
-      <h3 className="absolute top-20 md:top-24 uppercase tracking-[20px] text-gray-500 text-xl md:text-2xl">
-        Skills
-      </h3>
-      <h3 className="absolute top-32 md:top-36 uppercase tracking-[3px] text-gray-500 text-sm">
-        Hover over a skill for current proficiency
-      </h3>
+    <SectionFrame id="skills">
+      <SectionHeading
+        eyebrow="Skills"
+        title="A compact stack, selected for leverage."
+        description="I’m not trying to collect tools. I care about the handful that help me build better systems, communicate more clearly, and move from idea to shipped work with less waste."
+      />
 
-      <div className="grid grid-cols-4 gap-4 md:gap-5">
-        {skills?.slice(0, skills.length / 2).map((skill) => (
-          <Skill key={skill._id} skill={skill} />
-        ))}
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {skills.length === 0 ? (
+          <div className="rounded-[1.8rem] border border-dashed border-white/10 bg-white/4 p-6 text-sm text-stone-400">
+            Add skills with progress values and icons so this area reflects your real stack instead of a generic list.
+          </div>
+        ) : skills.map((skill, index) => {
+          const imageUrl = skill.image ? urlFor(skill.image).url() : "";
 
-        {skills?.slice(skills.length / 2, skills.length).map((skill) => (
-          <Skill key={skill._id} skill={skill} directionLeft />
-        ))}
+          return (
+            <motion.div
+              key={skill._id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: index * 0.03 }}
+              className="rounded-[1.75rem] border border-white/10 bg-white/4 p-4 backdrop-blur-sm"
+            >
+              <div className="flex items-center gap-4">
+                <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+                  {imageUrl ? (
+                    <Image src={imageUrl} alt={skill.title} fill sizes="48px" className="object-cover" />
+                  ) : null}
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-white">{skill.title}</p>
+                  <p className="mt-1 text-[0.58rem] uppercase tracking-[0.32em] text-stone-500">
+                    Proficiency
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-[#6f9f98]"
+                  style={{ width: `${skill.progress}%` }}
+                />
+              </div>
+
+              <p className="mt-2 text-[0.58rem] uppercase tracking-[0.32em] text-stone-400">
+                {skill.progress}%
+              </p>
+            </motion.div>
+          );
+        })}
       </div>
-    </motion.div>
+    </SectionFrame>
   );
 }

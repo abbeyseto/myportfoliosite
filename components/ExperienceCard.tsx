@@ -6,6 +6,8 @@ import { Experience } from "../typings";
 type Props = { experience: Experience };
 
 export default function ExperienceCard({experience}: Readonly<Props>) {
+  const started = new Date(experience.dateStarted);
+  const ended = new Date(experience.dateEnded ?? experience.dateStarted);
   return (
     <article className=" flex drop-shadow-xl flex-row rounded-2xl items-center space-y-0 p-4 flex-shrink-0 w-10/12  md:w-[450px] lg:w-[400px] xl:w-[500px] snap-center bg-[#FFFFFF] bg-gradient-to-tr from-white  to-darkGreen/30 hover:opacity-100 opacity-100 cursor-pointer transition-opacity duration-200 ">
       <motion.img
@@ -49,10 +51,10 @@ export default function ExperienceCard({experience}: Readonly<Props>) {
           />
         </div>
         <p className="uppercase py-2 md:py-5 text-gray-500 text-sm md:text-lg">
-          {`${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(experience?.dateStarted))} ${new Date(experience?.dateStarted).getFullYear().toString()} - `}
+          {`${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(started)} ${started.getFullYear().toString()} - `}
           {experience.isCurrentlyWorkingHere
             ? "Present"
-            : `${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(experience?.dateEnded))} ${new Date(experience?.dateEnded).getFullYear().toString()}`}
+            : `${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(ended)} ${ended.getFullYear().toString()}`}
         </p>
       </div>
       {/* <ul className="px-0 md:px-10 list-disc  text-black space-y-2 pr-5 text-justify ml-0 text-sm md:text-lg pl-5 overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-darkGreen/80">

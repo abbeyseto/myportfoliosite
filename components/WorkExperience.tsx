@@ -1,36 +1,112 @@
+import Image from "next/image";
+import React from "react";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { Experience } from "../typings";
-import ExperienceCard from "./ExperienceCard";
-import { fetchExperiences } from "../utils";
+import type { Experience } from "../typings";
+import { urlFor } from "../sanity";
+import SectionFrame from "./SectionFrame";
+import SectionHeading from "./SectionHeading";
 
-export default function WorkExperience() {
-  const [experiences, setExperience] = useState([] as Experience[]);
+type Props = {
+  experiences: Experience[];
+};
 
-  useEffect(() => {
-    async function fetchData() {
-      const experiences = await fetchExperiences();
-      setExperience(experiences);
-    }
-    fetchData();
-  }, []);
+const getStartTime = (value?: string) => {
+  if (!value) {
+    return 0;
+  }
+
+  const parsed = new Date(value).getTime();
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+const formatDate = (value?: string) => {
+  if (!value) {
+    return "Present";
+  }
+
+  const date = new Date(value);
+  return `${new Intl.DateTimeFormat("en-US", { month: "short" }).format(date)} ${date.getFullYear()}`;
+};
+
+export default function WorkExperience({ experiences }: Readonly<Props>) {
+  const sortedExperiences = [...experiences].sort((a, b) => getStartTime(b.dateStarted) - getStartTime(a.dateStarted));
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
-      className="h-screen  flex relative overflow-hidden flex-col text-left md:flex-row max-w-full px-10 justify-evenly mx-auto items-center"
-    >
-      <h3 className="absolute top-20 md:top-24 uppercase tracking-[20px] text-gray-500 text-xl md:text-2xl">
-        Experience
-      </h3>
+    <SectionFrame id="experience">
+      <SectionHeading
+        eyebrow="Experience"
+        title="I’ve led delivery across products, systems, and cross-functional teams."
+        description="The thread through my work is the same: reduce friction, improve clarity, and make the operating model more durable than any one project."
+      />
 
-      {/* Experience cards */}
-      <div className="w-screen h-1/2 md:w-full text-left pb-5 md:pb-10 flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-darkGreen/80">
-        {experiences && experiences?.map((experience) => (
-          <ExperienceCard key={experience._id} experience={experience} />
-        ))}
+      <div className="mt-10 grid gap-4 lg:grid-cols-2">
+        {sortedExperiences.length === 0 ? (
+          <div className="rounded-[2rem] border border-dashed border-white/10 bg-white/4 p-6 text-sm text-stone-400">
+            Add experience entries in Sanity with job title, company, dates, points, and technologies so this section can read like a real career timeline.
+          </div>
+        ) : sortedExperiences.map((experience, index) => {
+          const companyUrl = experience.companyImage ? urlFor(experience.companyImage).url() : "";
+          const technologies = experience.technologies ?? [];
+
+          return (
+            <motion.article
+              key={experience._id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: index * 0.04 }}
+              className="grid gap-5 rounded-[1.8rem] border border-white/10 bg-white/4 p-5 backdrop-blur-sm"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.4rem] border border-white/10 bg-black/35 p-2">
+                    {companyUrl ? (
+                      <Image
+                        src={companyUrl}
+                        alt={experience.company}
+                        width={64}
+                        height={64}
+                        className="h-12 w-12 rounded-2xl object-contain"
+                      />
+                    ) : (
+                      <div className="text-center text-[0.65rem] uppercase tracking-[0.2em] text-stone-500">
+                        {experience.company}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-medium tracking-tight text-white md:text-[1.35rem]">
+                      {experience.jobTitle}
+                    </h3>
+                    <p className="mt-1 text-[0.72rem] uppercase tracking-[0.3em] text-[#6f9f98]">
+                      {experience.company}
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-[0.65rem] uppercase tracking-[0.3em] text-stone-400">
+                  {formatDate(experience.dateStarted)} -{" "}
+                  {experience.isCurrentlyWorkingHere ? "Present" : formatDate(experience.dateEnded)}
+                </p>
+              </div>
+
+              {technologies.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {technologies.map((technology) => (
+                    <span
+                      key={technology._id}
+                      className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[0.62rem] uppercase tracking-[0.24em] text-stone-300"
+                    >
+                      {technology.title}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+            </motion.article>
+          );
+        })}
       </div>
-    </motion.div>
+    </SectionFrame>
   );
 }

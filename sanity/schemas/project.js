@@ -23,6 +23,32 @@ export default {
       type: 'text',
     },
     {
+      name: 'challenge',
+      title: 'Challenge',
+      type: 'text',
+    },
+    {
+      name: 'role',
+      title: 'Role',
+      type: 'string',
+    },
+    {
+      name: 'outcome',
+      title: 'Outcome',
+      type: 'text',
+    },
+    {
+      name: 'year',
+      title: 'Year',
+      type: 'string',
+    },
+    {
+      name: 'featured',
+      title: 'Featured',
+      type: 'boolean',
+      initialValue: false,
+    },
+    {
       name: 'technologies',
       title: 'Technologies',
       type: 'array',

@@ -1,91 +1,94 @@
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Cursor, useTypewriter } from "react-simple-typewriter";
-import { urlFor } from "../sanity";
-import { PageInfo } from "../typings";
-import BackgroundCircles from "./BackgroundCircles";
 import Image from "next/image";
-import { fetchPageInfo, fetchWhatIDo } from "../utils";
+import Link from "next/link";
+import React from "react";
+import { motion } from "framer-motion";
+import type { PageInfo, WhatIDo } from "../typings";
+import { urlFor } from "../sanity";
+import BackgroundCircles from "./BackgroundCircles";
 
-interface HeroProps {
-  onDisplay: () => void;
-  // Other props for the Hero component
-}
+type Props = {
+  pageInfo: PageInfo;
+  whatIDo: WhatIDo[];
+};
 
-const Hero: React.FC<HeroProps> = ({ onDisplay }) => {
-  const [pageInfo, setPageInfo] = useState({} as PageInfo);
-  const [titles, setTitles] = useState([] as string[]);
-  
-  const [text] = useTypewriter({
-    words: [`Hi , my name is ${pageInfo?.name}`, ...titles],
-    loop: true,
-    delaySpeed: 2000,
-  });
-  const [isDataReady, setIsDataReady] = useState(false);
+const navItems = [
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Modelomics", href: "/modelomics" },
+];
 
-  useEffect(() => {
-    async function fetchData() {
-      const pageInfo = await fetchPageInfo();
-      const whatido = await fetchWhatIDo();
-      const titles: string[] = whatido.map((item) => item.title);
-      setPageInfo(pageInfo);
-      setTitles(titles);
-      setIsDataReady(true); // Set data ready flag to true
-      onDisplay();
-    }
-    fetchData();
-  }, [onDisplay]);
-
-  if (!isDataReady) {
-    return (
-      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white">
-        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-          Loading...
-        </span>
-      </div>
-    );
-  }
+export default function Hero({ pageInfo, whatIDo }: Readonly<Props>) {
+  const portraitUrl = pageInfo.heroImage ? urlFor(pageInfo.heroImage).url() : "";
+  const spotlightItems = whatIDo.slice(0, 3);
+  const heroSummary =
+    "I build scalable digital platforms, AI-powered systems, and product infrastructure that help teams move from idea to execution with less friction.";
 
   return (
-    <div className="h-screen flex flex-col space-y-8 items-center justify-center bg-black text-white text-center overflow-hidden">
+    <section className="theme-dark-surface relative min-h-[calc(100vh-4.5rem)] overflow-hidden bg-black px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
       <BackgroundCircles />
 
-      {pageInfo?.heroImage && (
-        <Image
-          className="relative rounded-full h-32 w-32 mx-auto object-cover"
-          src={urlFor(pageInfo.heroImage).url() ?? ''}
-          width={100}
-          height={130}
-          alt=""
-        />
-      )}
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-8rem)] max-w-7xl flex-col items-center justify-center text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="max-w-4xl"
+        >
+          <p className="text-[0.72rem] uppercase tracking-[0.7em] text-stone-400 sm:text-sm">
+            {pageInfo.role}
+          </p>
+          <div className="mx-auto mt-8 flex items-center justify-center">
+            <div className="relative h-28 w-28 rounded-full border border-white/15 bg-white/5 p-2 shadow-[0_0_60px_rgba(111,159,152,0.22)] sm:h-32 sm:w-32">
+              {portraitUrl ? (
+                <Image
+                  src={portraitUrl}
+                  alt={`${pageInfo.name} portrait`}
+                  fill
+                  sizes="128px"
+                  className="rounded-full object-cover"
+                  priority
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-white/8 text-sm text-stone-300">
+                  {pageInfo.name}
+                </div>
+              )}
+            </div>
+          </div>
 
-      <div className="z-20">
-        <h2 className="text-sm uppercase text-gray-400 pb-2 tracking-[10px] md:tracking-[15px]">
-          {pageInfo?.role}
-        </h2>
-        <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold px-10">
-          <span className="mr-3">{text}</span>
-          <Cursor cursorColor="#68B2A0" />
-        </h1>
+          <h1 className="mx-auto mt-10 max-w-5xl text-4xl font-semibold leading-[0.96] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            Building solutions that drive growth.
+          </h1>
 
-        <div className="pt-5">
-          <Link href="#about">
-            <button className="heroButton">About</button>
-          </Link>
-          <Link href="#experience">
-            <button className="heroButton">Experience</button>
-          </Link>
-          <Link href="#skills">
-            <button className="heroButton">Skills</button>
-          </Link>
-          <Link href="#projects">
-            <button className="heroButton">Projects</button>
-          </Link>
-        </div>
+          <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-stone-300 sm:text-base">
+            {heroSummary}
+          </p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="rounded-full border border-white/20 px-5 py-3 text-[0.72rem] uppercase tracking-[0.35em] text-stone-200 transition hover:border-[#6f9f98]/80 hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </motion.div>
+
+        {spotlightItems.length > 0 ? (
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.68rem] uppercase tracking-[0.32em] text-stone-400">
+            {spotlightItems.map((item, index) => (
+              <React.Fragment key={item._id}>
+                {index > 0 ? <span className="text-stone-600">•</span> : null}
+                <span>{item.title}</span>
+              </React.Fragment>
+            ))}
+          </div>
+        ) : null}
       </div>
-    </div>
+    </section>
   );
 }
-
-export default Hero;

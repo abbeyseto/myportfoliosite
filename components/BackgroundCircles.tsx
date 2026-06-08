@@ -1,49 +1,24 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 
-type Props = {};
-
-export default function BackgroundCircles({}: Props) {
+export default function BackgroundCircles() {
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        scale: [1, 2, 2, 3, 1],
-        opacity: [0.1, 0.2, 0.4, 0.8, 0.1, 1.0],
-        borderRadius: ["20%", "20%", "50%", "80%", "20%"],
-      }}
-      transition={{
-        duration: 3,
-      }}
-      className="relative flex justify-center items-center"
-    >
-      <div
-        className="absolute border border-white opacity-80 rounded-full h-[200px] w-[200px] mt-64 md:mt:52 
-            animate-ping"
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <motion.div
+        aria-hidden="true"
+        className="absolute left-1/2 top-[38%] h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(111,159,152,0.14),rgba(111,159,152,0.04)_42%,transparent_72%)] blur-3xl sm:h-[32rem] sm:w-[32rem]"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1, ease: "easeOut" }}
       />
-      <div />
-      <div
-        className="absolute border border-white opacity-80 rounded-full h-[300px] w-[300px] mt-64 md:mt:52 
-            animate-ping"
+      <motion.div
+        aria-hidden="true"
+        className="absolute right-[-10%] top-[32%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08),rgba(255,255,255,0.02)_38%,transparent_74%)] blur-3xl sm:h-[36rem] sm:w-[36rem]"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.3, ease: "easeOut" }}
       />
-      <div />
-      <div
-        className="absolute border border-white  opacity-80 rounded-full h-[500px] w-[500px] mt-64 md:mt:52 
-            animate-ping"
-      />
-      <div />
-      <div
-        className="absolute border-2 border-lightGreen opacity-50 h-[510px] w-[510px] md:h-[650px] md:w-[650px] 
-            animate-pulse mt-64 md:mt:52 rounded-full"
-      />
-      <div />
-      <div
-        className="absolute border border-white opacity-80 rounded-full h-[800px] w-[800px] mt-64 md:mt:52 
-            animate-ping"
-      />
-      <div />
-    </motion.div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(108,146,140,0.08),transparent_38%,transparent_68%,rgba(0,0,0,0.6)_88%)]" />
+    </div>
   );
 }
